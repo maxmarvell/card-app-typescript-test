@@ -44,7 +44,7 @@ export const SettingContext = createContext<SettingContextType | null>(null);
 
 export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [darkMode, setDarkMode] = useState(false);
-
+  
   return (
     <SettingContext.Provider value={{ state: darkMode, handler: setDarkMode }}>{children}</SettingContext.Provider>
   );

@@ -28,7 +28,7 @@ server.post<{ Body: Entry }>("/create/", async (req, reply) => {
   newEntryBody.created_at
     ? (newEntryBody.created_at = new Date(req.body.created_at))
     : (newEntryBody.created_at = new Date());
-  if (!(newEntryBody.scheduled_for > newEntryBody.created_at)) {
+  if (!(newEntryBody.scheduled_for >= newEntryBody.created_at)) {
     reply.status(500).send({ msg: "Schedule should be after Date!" });
   } else {
     try {
@@ -55,7 +55,7 @@ server.put<{ Params: { id: string }; Body: Entry }>("/update/:id", async (req, r
   updatedEntryBody.created_at
     ? (updatedEntryBody.created_at = new Date(req.body.created_at))
     : (updatedEntryBody.created_at = new Date());
-  if (!(updatedEntryBody.scheduled_for > updatedEntryBody.created_at)) {
+  if (!(updatedEntryBody.scheduled_for >= updatedEntryBody.created_at)) {
     reply.status(500).send({ msg: "Schedule should be after Date!" });
   } else {
     try {

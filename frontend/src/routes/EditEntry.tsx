@@ -31,7 +31,7 @@ export default function EditEntry() {
 
   const darkMode = useContext(SettingContext);
   const validSchedule = newEntry.scheduled_for >= newEntry.created_at;
-  const validForm = (validSchedule && newEntry.description.length && newEntry.title.length) ? true : false
+  const validForm = validSchedule && newEntry.description.length && newEntry.title.length ? true : false;
 
   return (
     <section
@@ -82,16 +82,14 @@ export default function EditEntry() {
         onClick={(e) => {
           handleSend(e);
         }}
-        className={`bg-blue-400 hover:bg-blue-600 font-semibold text-white p-3 rounded-md ${!validForm 
-          && "bg-slate-200 cursor-default hover:bg-slate-200"}`}
+        className={`bg-blue-400 hover:bg-blue-600 font-semibold text-white p-3 rounded-md ${
+          !validForm && "bg-slate-200 cursor-default hover:bg-slate-200"
+        }`}
+        disabled={!validForm}
       >
         Update
       </button>
-      { !validSchedule ? (
-        <p className="text-wrap">Please schedule a valid day</p>
-      ) : (
-        null
-      )}
+      {!validSchedule ? <p className="text-wrap">Please schedule a valid day</p> : null}
     </section>
   );
 }
