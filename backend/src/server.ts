@@ -27,11 +27,15 @@ server.get<{ Body: Entry; Params: { id: string } }>(
 
 server.post<{ Body: Entry }>("/create/", async (req, reply) => {
   let newEntryBody = req.body;
+  newEntryBody.scheduled_for = new Date(req.body.scheduled_for)
   newEntryBody.created_at
     ? (newEntryBody.created_at = new Date(req.body.created_at))
     : (newEntryBody.created_at = new Date());
+  if (!(newEntryBody.scheduled_for > newEntryBody.created_at)) {
+    reply.status(500).send({ msg: "Schedule should be after Date!"})
+  }
   try {
-    const createdEntryData = await Prisma.entry.create({ data: req.body });
+    const createdEntryData = await Prisma.entry.create({ data: newEntryBody });
     reply.send(createdEntryData);
   } catch {
     reply.status(500).send({ msg: "Error creating entry" });
@@ -51,12 +55,16 @@ server.put<{ Params: { id: string }; Body: Entry }>(
   "/update/:id",
   async (req, reply) => {
     let updatedEntryBody = req.body;
+    updatedEntryBody.scheduled_for = new Date(req.body.scheduled_for)
     updatedEntryBody.created_at
-      ? (updatedEntryBody.created_at = new Date(req.body.created_at))
-      : (updatedEntryBody.created_at = new Date());
+    ? (updatedEntryBody.created_at = new Date(req.body.created_at))
+    : (updatedEntryBody.created_at = new Date());
+    if (!(updatedEntryBody.scheduled_for > updatedEntryBody.created_at)) {
+      reply.status(500).send({ msg: "Schedule should be after Date!"})
+    }
     try {
       await Prisma.entry.update({
-        data: req.body,
+        data: updatedEntryBody,
         where: { id: req.params.id },
       });
       reply.send({ msg: "Updated successfully" });

@@ -2,6 +2,7 @@ export interface Entry {
   id?: string;
   title: string;
   description: string;
+  scheduled_for: Date | string;
   created_at: Date | string;
 }
 export type EntryContextType = {
@@ -10,3 +11,7 @@ export type EntryContextType = {
   updateEntry: (id: string, entryData: Entry) => void;
   deleteEntry: (id: string) => void;
 };
+export type SettingContextType = {
+  state: boolean;
+  handler: (input: boolean) => void;
+}
