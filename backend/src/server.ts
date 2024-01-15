@@ -30,8 +30,7 @@ server.post<{ Body: Entry }>("/create/", async (req, reply) => {
     : (newEntryBody.created_at = new Date());
   if (!(newEntryBody.scheduled_for > newEntryBody.created_at)) {
     reply.status(500).send({ msg: "Schedule should be after Date!" });
-  }
-  else {
+  } else {
     try {
       const createdEntryData = await Prisma.entry.create({ data: newEntryBody });
       reply.send(createdEntryData);
