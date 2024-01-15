@@ -14,4 +14,4 @@ export type EntryContextType = {
 export type SettingContextType = {
   state: boolean;
   handler: (input: boolean) => void;
-}
+};
